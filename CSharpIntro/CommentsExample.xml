@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CSharpLearning</name>
+    </assembly>
+    <members>
+        <member name="M:CSharpLearning.Program.Main(System.String[])">
+            XML comments are used to provide documentation of the code
+            <summary>
+                This is the main application for learning C# and using working examples. 
+            </summary>
+            <param name="args">
+                An arrary of string arguments from the command line
+            </param>
+            <returns>
+                No return value
+            </returns>
+            <see href='https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags'>
+                XML tags for C# documentation comments
+            </see>
+        </member>
+    </members>
+</doc>
