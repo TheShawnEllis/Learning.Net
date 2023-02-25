@@ -2,6 +2,7 @@
 using static System.Console;
 
 namespace AccessModifiers;
+
 class Program
 {
     static void Main(string[] args)
