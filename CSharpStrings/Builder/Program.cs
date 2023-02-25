@@ -14,7 +14,7 @@ class Program
         StringBuilder sb = new StringBuilder("Initial String", 200);
 
         // TODO: Basic string builder stats
-        Console.Writeline($"Capacity: {sb.Capacity}; Lenght: {sb.Length}");
+        Writeline($"Capacity: {sb.Capacity}; Lenght: {sb.Length}");
 
         // TODO: Add strings using Append strings
         sb.Append("The quick ");
