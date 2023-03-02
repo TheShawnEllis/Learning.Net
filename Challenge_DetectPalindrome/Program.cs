@@ -23,7 +23,7 @@ class Program
             WriteLine("Enter some text to see if its a palindrome:");
             IsPalindrome(ReadLine());
 
-            WriteLine("Play again?");
+            WriteLine("Play again? Use no or exit.");
             playAgainResponse = ReadLine().ToLower();
             if (playAgainResponse == "exit" || playAgainResponse == "no") keepPlaying = false;
         }
@@ -34,7 +34,6 @@ class Program
     {
         // Strip whitespace and case
         string cleanInput = UserInput.ToLower().Replace(" ", "");
-        WriteLine($"Cleaned = {cleanInput}");
 
         // Strip punctuation
         StringBuilder sb = new StringBuilder();
@@ -49,6 +48,18 @@ class Program
 
         cleanInput = sb.ToString();
 
-        return (true, 20);
+        // Validate if palidrome
+        for(int i = 0; i < cleanInput.Length; i++)
+        {
+            int c = cleanInput.Length - i;
+            if (cleanInput[i] != cleanInput[c])
+            {
+                WriteLine("Not a palidrome");
+                return (false, cleanInput.Length);
+            }
+            Write(cleanInput[i]);
+        }
+        WriteLine("This is a palidrome.");
+        return (true, cleanInput.Length);
     }
 }
