@@ -1,7 +1,6 @@
 ﻿using System;
 using static System.Console;
 
-
 namespace StringOperations;
 class Program
 {
