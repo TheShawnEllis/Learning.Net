@@ -1,13 +1,10 @@
 # Learning.Net
+This repo is used for coding along with any project or lesson that I take in class or online. It just for keeping notes, code examples, or practice. 
+<br><br>
 
-
-
-# Lesson & Coding Notes
 ## Algorithms 
 ### What is an algorithm?
-
 A well-definied sequential process or instructions that describe how to perform a task or solve a problem.
-
 ### Characteristics of Algorithms 
 All algorithms have several characteristics that are used to describe them:
 1. **Space Complexity:** describes how much memory and storage space the algorithm needs to complete the work.
