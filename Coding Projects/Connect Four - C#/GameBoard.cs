@@ -5,7 +5,23 @@ namespace ConnectFour
 {
     public class GameBoard
     {
-
+        // Representing the board as a 2D array.
+            //    1   2   3   4   5   6   7
+            //  +---+---+---+---+---+---+---+
+            //  |   |   |   |   |   |   |   |
+            //  +---+---+---+---+---+---+---+
+            //  |   |   |   |   |   |   |   |
+            //  +---+---+---+---+---+---+---+
+            //  |   |   |   |   |   |   |   |
+            //  +---+---+---+---+---+---+---+
+            //  |   |   |   |   |   |   |   |
+            //  +---+---+---+---+---+---+---+
+            //  |   |   |   |   |   |   |   |
+            //  +---+---+---+---+---+---+---+
+            //  | x |   |   |   |   | o |   |
+            //  +---+---+---+---+---+---+---+
+        
+        /*
         private char[,] board = {
             {'+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+'},
             {'|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|'},
@@ -21,12 +37,64 @@ namespace ConnectFour
             {'|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|',' ',' ',' ','|'},
             {'+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+','-','-','-','+'},
         };
+        */
+
+        // private char[,] board = {
+        //     {' ',' ',' ',' ',' ',' ',' '},
+        //     {' ',' ',' ',' ',' ',' ',' '},
+        //     {' ',' ',' ',' ',' ',' ',' '},
+        //     {' ',' ',' ',' ',' ',' ',' '},
+        //     {' ',' ',' ',' ',' ',' ',' '},
+        //     {' ',' ',' ',' ',' ',' ',' '}
+        // };
+
+        private char[,] board = {
+            {'-','-','-','-','-','-','-'},
+            {'-','-','-','-','-','-','-'},
+            {'-','-','-','-','-','-','-'},
+            {'-','-','-','-','-','-','-'},
+            {'-','-','-','-','-','-','-'},
+            {'-','-','-','-','-','-','-'}            
+        };
+
+        private char colSeperator = '|';
 
         public void DisplayBoard() 
         {
             int rows = board.GetLength(0);
             int cols = board.GetLength(1);
-            
+
+            // Print Header row
+            for (int i = 0; i < cols; i++)
+            {
+                Write($"{colSeperator}{i + 1}");
+            }
+            Write(colSeperator);
+            WriteLine();
+
+            for (int currentRow = 0; currentRow < rows; currentRow++)
+            {   
+                // TODO: Print boarder        
+                for (int currentCol = 0; currentCol < cols; currentCol++)
+                {
+                    Write($"{colSeperator}{board[currentRow, currentCol]}");
+                }
+                Write(colSeperator);
+                WriteLine();
+            }
+        }
+    
+        public void PlacePlayerPiece()
+        {
+            board[5,0] = 'x';
+            board[3,6] = 'o';
+        }
+
+        public void ClearBoard()
+        {
+            int rows = board.GetLength(0);
+            int cols = board.GetLength(1);
+
             for (int currentRow = 0; currentRow < rows; currentRow++)
             {
                 for (int currentCol = 0; currentCol < cols; currentCol++)
