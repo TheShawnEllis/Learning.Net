@@ -39,25 +39,17 @@ namespace ConnectFour
         };
         */
 
-        // private char[,] board = {
-        //     {' ',' ',' ',' ',' ',' ',' '},
-        //     {' ',' ',' ',' ',' ',' ',' '},
-        //     {' ',' ',' ',' ',' ',' ',' '},
-        //     {' ',' ',' ',' ',' ',' ',' '},
-        //     {' ',' ',' ',' ',' ',' ',' '},
-        //     {' ',' ',' ',' ',' ',' ',' '}
-        // };
-
         private char[,] board = {
-            {'-','-','-','-','-','-','-'},
-            {'-','-','-','-','-','-','-'},
-            {'-','-','-','-','-','-','-'},
-            {'-','-','-','-','-','-','-'},
-            {'-','-','-','-','-','-','-'},
-            {'-','-','-','-','-','-','-'}            
+            {' ',' ',' ',' ',' ',' ',' '},
+            {' ',' ',' ',' ',' ',' ',' '},
+            {' ',' ',' ',' ',' ',' ',' '},
+            {' ',' ',' ',' ',' ',' ',' '},
+            {' ',' ',' ',' ',' ',' ',' '},
+            {' ',' ',' ',' ',' ',' ',' '}            
         };
 
-        private char colSeperator = '|';
+        private string colSeperator = "| ";
+        private string rowBoarder = "+---+---+---+---+---+---+---+";
 
         public void DisplayBoard() 
         {
@@ -67,21 +59,24 @@ namespace ConnectFour
             // Print Header row
             for (int i = 0; i < cols; i++)
             {
-                Write($"{colSeperator}{i + 1}");
+                Write($"{colSeperator}{i + 1} ");
             }
             Write(colSeperator);
             WriteLine();
+            WriteLine(rowBoarder);
 
+            // Print game board
             for (int currentRow = 0; currentRow < rows; currentRow++)
             {   
-                // TODO: Print boarder        
                 for (int currentCol = 0; currentCol < cols; currentCol++)
                 {
-                    Write($"{colSeperator}{board[currentRow, currentCol]}");
+                    Write($"{colSeperator}{board[currentRow, currentCol]} ");
                 }
                 Write(colSeperator);
                 WriteLine();
+                WriteLine(rowBoarder);
             }
+            WriteLine();
         }
     
         public void PlacePlayerPiece()
@@ -95,11 +90,11 @@ namespace ConnectFour
             int rows = board.GetLength(0);
             int cols = board.GetLength(1);
 
-            for (int currentRow = 0; currentRow < rows; currentRow++)
+            for (int currentrow = 0; currentrow < rows; currentrow++)
             {
-                for (int currentCol = 0; currentCol < cols; currentCol++)
+                for (int currentcol = 0; currentcol < cols; currentcol++)
                 {
-                    Write(board[currentRow, currentCol]);
+                    board[currentrow, currentcol] = ' ';
                 }
                 WriteLine();
             }

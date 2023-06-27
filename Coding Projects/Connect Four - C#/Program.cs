@@ -8,7 +8,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        GameBoard gameBoard = new GameBoard(); 
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.DisplayBoard();
+        gameBoard.PlacePlayerPiece();
+        gameBoard.DisplayBoard();
+        gameBoard.ClearBoard();
         gameBoard.DisplayBoard();
     }
 }
