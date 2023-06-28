@@ -83,12 +83,80 @@ namespace ConnectFour
             }
             WriteLine();
         }
-    
-        //public void PlacePlayerPiece()
-        //{
-        //    board[0,1] = 'x';
-        //    board[3,6] = 'o';
-        //}
+
+        public void SelectPosition(bool IsPlayerOneTurn)
+        {
+            int positionChoice;
+            bool validChoice;
+            char playerPiece;
+
+            playerPiece = IsPlayerOneTurn ? 'x' : 'o';
+            positionChoice = Read();
+            validChoice = IsPositionChoiceValid(positionChoice);
+
+            if (validChoice)
+            {
+                PlacePlayerPiece(positionChoice, playerPiece);
+            }
+        }
+
+
+        public void PlacePlayerPiece(int SelectedPosition = 3, char BoardPiece = 'x')
+        { 
+            board[SelectedPosition,6] = BoardPiece;
+        }
+
+        /// <summary>
+        /// For a player move to be valid:
+        ///     Column selected must be 1-7. Selecting 0 or 8+ will give error.
+        ///     A piece cannot be placed in same position another piece exists.
+        ///     A piece cannot be placed in a column thats full.
+        /// </summary>
+        /// <param name="Column">Column selected by the user on current turn.</param>
+        /// <returns></returns>
+        public (bool, int) IsPositionChoiceValid(int SelectedColumn)
+        {
+            int nextOpenPosition = 0;
+
+            try
+            {
+                // Check if column choice is between 1 and 7.
+                if ((SelectedColumn > 1) && (SelectedColumn < 7))
+                {
+                    // TODO: board[row, col]
+                    int rows = board.GetLength(1);
+                    SelectedColumn -= 1;
+
+                    // Check if column is full starting from bottom up                  
+                    for (int i = 0; i < rows; i++)
+                    {
+                        int currentRow = rows - i;
+                        char checkSpace = board[currentRow, SelectedColumn];
+
+                        if (checkSpace == ' ')
+                        {
+                            nextOpenPosition = currentRow;
+                            return (true, nextOpenPosition);
+                        }
+                    }
+                    return (false, nextOpenPosition);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(SelectedColumn), "Invalid column selected. Choose a column from 1-7.");
+                }                
+            }
+            catch(ArgumentOutOfRangeException ex)
+            {
+                WriteLine(ex);
+                return (false, nextOpenPosition);
+            }
+            catch (Exception ex)
+            {
+                WriteLine(ex);
+                return (false, nextOpenPosition);
+            }
+        }
 
         public void ClearBoard()
         {
@@ -103,66 +171,6 @@ namespace ConnectFour
                 }
                 WriteLine();
             }
-        }
-
-        public void SelectPosition()
-        {
-            // Get value from the user
-            // Check if position is valid 
-            // Place piece
-        }
-
-        /// <summary>
-        /// For a player move to be valid:
-        ///     Column selected must be 1-7. Selecting 0 or 8+ will give error
-        ///     A piece cannot be placed in same position another piece exists
-        ///     A piece cannot be placed in a column thats full.
-        /// </summary>
-        /// <param name="Column">Column selected by the user on current turn.</param>
-        /// <returns></returns>
-        public bool PlacePlayerPiece(int SelectedColumn, char PlayerPiece)
-        {
-            bool valid = true;
-            int rows = board.GetLength(1);
-
-            try
-            {
-                // User will use 1-7, converting to index
-                SelectedColumn -= 1;
-
-                // Check if column choice is between 1 and 7.
-                if ((SelectedColumn > 1) && (SelectedColumn < 7))
-                {
-                    // check the column of the lowest row first if space is open
-                    // If not open check next lowest
-                    // If open place piece
-                    for (int i = 0; i < rows; i++)
-                    {
-                        char checkPosition = board[rows - 1, SelectedColumn];
-                        
-                        if (checkPosition == ' ')
-                        {
-                            checkPosition = PlayerPiece;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    valid = false;
-                    throw new ArgumentOutOfRangeException(nameof(SelectedColumn), "Invalid column selected. Choose a column from 1-7.");
-                }                
-            }
-            catch(ArgumentOutOfRangeException ex)
-            {
-                WriteLine(ex);
-                SelectPosition();
-            }
-            catch (Exception ex)
-            {
-                WriteLine(ex);
-            }
-            return valid;
         }
     }
 }
