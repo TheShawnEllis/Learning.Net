@@ -8,34 +8,25 @@ namespace ConnectFour
 {
     public class Game
     {
-        // Notes: board[row, column]
-        // Representing the board as a 2D array.
-            //    1   2   3   4   5   6   7
-            //  +---+---+---+---+---+---+---+
-            //  |   |   |   |   |   |   |   |
-            //  +---+---+---+---+---+---+---+
-            //  |   |   |   |   |   |   |   |
-            //  +---+---+---+---+---+---+---+
-            //  |   |   |   |   |   |   |   |
-            //  +---+---+---+---+---+---+---+
-            //  |   |   |   |   |   |   |   |
-            //  +---+---+---+---+---+---+---+
-            //  |   |   |   |   |   |   |   |
-            //  +---+---+---+---+---+---+---+
-            //  | x |   |   |   |   | o |   |
-            //  +---+---+---+---+---+---+---+
-        
+        public bool InProgress { get; set; }
+
         private char[,] board = {
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
-            {' ',' ',' ',' ',' ',' ',' '}            
+            {' ',' ',' ',' ',' ',' ',' '}
         };
         private string colSeperator = "| ";
         private string rowBoarder = "+---+---+---+---+---+---+---+";
         private bool playerOneTurn = true;
+        private int rounds = 0;
+
+        public Game()
+        {
+            InProgress = true;
+        }
 
         public void DisplayBoard() 
         {
@@ -65,6 +56,21 @@ namespace ConnectFour
             WriteLine();
         }
 
+        public void ClearBoard()
+        {
+            int rows = board.GetLength(0);
+            int cols = board.GetLength(1);
+
+            for (int currentrow = 0; currentrow < rows; currentrow++)
+            {
+                for (int currentcol = 0; currentcol < cols; currentcol++)
+                {
+                    board[currentrow, currentcol] = ' ';
+                }
+                WriteLine();
+            }
+        }
+
         public void SelectPosition()
         {
             string? playerInput;
@@ -79,36 +85,40 @@ namespace ConnectFour
             {
                 PlacePlayerPiece(playerSelection.openRow, playerSelection.columnChoice, playerPiece);
                 playerOneTurn = !playerOneTurn;
+                
+                if (playerOneTurn) rounds += 1;
+                if (rounds >= 5) IsGameWin(playerPiece);
             }
-            else SelectPosition();
         }
 
-        public void PlacePlayerPiece(int Row, int Column, char BoardPiece)
+        private void PlacePlayerPiece(int Row, int Column, char BoardPiece)
         {
             try
             {
                 WriteLine($"Placing {BoardPiece} in Column {Column + 1}.");
                 board[Row, Column] = BoardPiece;
+                DisplayBoard();
             }
             catch (Exception ex)
             {
                 WriteLine (ex.ToString());
-            }
-            
+            }            
         }
 
-        public (bool, int, int) IsPlayerChoiceValid(string SelectedColumn)
+        private (bool, int, int) IsPlayerChoiceValid(string SelectedColumn)
         {
-            // TODO: Fix column 0 showing full when open
             try
-            {
+            {   
+                // Check player choice is not blank
                 if (!string.IsNullOrWhiteSpace(SelectedColumn))
                 {
+                    // Check player choice is not a letter
                     if (Int32.TryParse(SelectedColumn, out int columnNumber))
                     {
                         int rows = board.GetUpperBound(0);
                         int cols = board.GetLength(1);
 
+                        // Check if column exists
                         if ((columnNumber >= 1) && (columnNumber <= cols))
                         {
                             columnNumber -= 1;
@@ -148,18 +158,26 @@ namespace ConnectFour
             }
         }
 
-        public void ClearBoard()
+        private void IsGameWin(char Piece)
         {
-            int rows = board.GetLength(0);
-            int cols = board.GetLength(1);
+            int openColumns = 0;
+            bool endGame = false;
 
-            for (int currentrow = 0; currentrow < rows; currentrow++)
+            // Check for winning game
+
+
+            // Check for open spaves in row 0
+            for (int i = 0; i < board.GetLength(1); i++)
             {
-                for (int currentcol = 0; currentcol < cols; currentcol++)
+                if (String.IsNullOrWhiteSpace(board[0, i].ToString()))
                 {
-                    board[currentrow, currentcol] = ' ';
+                    openColumns += 1;
                 }
-                WriteLine();
+            }
+
+            if (openColumns > 0)
+            {
+                
             }
         }
     }

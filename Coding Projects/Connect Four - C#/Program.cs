@@ -9,10 +9,10 @@ class Program
     static void Main(string[] args)
     {
         Game game = new Game();
+        game.DisplayBoard();
 
-        while (true) 
+        while (game.InProgress) 
         {
-            game.DisplayBoard();
             game.SelectPosition();
         }
     }
