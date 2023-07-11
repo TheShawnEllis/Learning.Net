@@ -17,7 +17,7 @@ namespace ConnectFour
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
-            {'x','x','x','x',' ',' ',' '}
+            {' ',' ',' ',' ',' ',' ',' '}
         };
         private string colSeperator = "| ";
         private string rowBoarder = "+---+---+---+---+---+---+---+";
@@ -27,7 +27,7 @@ namespace ConnectFour
         public Game()
         {
             InProgress = true;
-            SpacesToWin = 4;
+            SpacesToWin = 5;
         }
 
         public void DisplayBoard() 
@@ -90,8 +90,8 @@ namespace ConnectFour
                 PlacePlayerPiece(playerSelection.openRow, playerSelection.columnChoice, playerPiece);
                 playerOneTurn = !playerOneTurn;
 
-                //if (rounds >= SpacesToWin) IsGameWin(playerPiece);
-                IsGameWin(playerPiece);
+                if (rounds >= SpacesToWin) IsGameWin(playerPiece);
+                //IsGameWin(playerPiece);
             }
         }
 
@@ -196,7 +196,6 @@ namespace ConnectFour
 
                             if (continuousPieces >= SpacesToWin)
                             {
-                                // TODO: If game won code needs to stop and exit game
                                 WriteLine($"Player {Piece} won the game!");
                                 InProgress = false;
                                 break;
