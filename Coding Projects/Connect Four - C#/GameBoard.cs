@@ -9,6 +9,7 @@ namespace ConnectFour
     public class Game
     {
         public bool InProgress { get; set; }
+        public int SpacesToWin { get; set; }
 
         private char[,] board = {
             {' ',' ',' ',' ',' ',' ',' '},
@@ -16,7 +17,7 @@ namespace ConnectFour
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
             {' ',' ',' ',' ',' ',' ',' '},
-            {' ',' ',' ',' ',' ',' ',' '}
+            {'x','x','x','x',' ',' ',' '}
         };
         private string colSeperator = "| ";
         private string rowBoarder = "+---+---+---+---+---+---+---+";
@@ -26,6 +27,7 @@ namespace ConnectFour
         public Game()
         {
             InProgress = true;
+            SpacesToWin = 4;
         }
 
         public void DisplayBoard() 
@@ -83,11 +85,13 @@ namespace ConnectFour
 
             if (playerSelection.valid)
             {
+                if (playerOneTurn) rounds += 1;
+
                 PlacePlayerPiece(playerSelection.openRow, playerSelection.columnChoice, playerPiece);
                 playerOneTurn = !playerOneTurn;
-                
-                if (playerOneTurn) rounds += 1;
-                if (rounds >= 5) IsGameWin(playerPiece);
+
+                //if (rounds >= SpacesToWin) IsGameWin(playerPiece);
+                IsGameWin(playerPiece);
             }
         }
 
@@ -160,24 +164,54 @@ namespace ConnectFour
 
         private void IsGameWin(char Piece)
         {
-            int openColumns = 0;
-            bool endGame = false;
-
-            // Check for winning game
-
-
-            // Check for open spaves in row 0
-            for (int i = 0; i < board.GetLength(1); i++)
+            try
             {
-                if (String.IsNullOrWhiteSpace(board[0, i].ToString()))
+                int openColumns = 0;
+                int continuousPieces = 0;
+
+                // Check for open spaces in row 0
+                //for (int i = 0; i < board.GetLength(1); i++)
+                //{
+                //    if (String.IsNullOrWhiteSpace(board[0, i].ToString())) openColumns += 1;
+                //}
+
+                //if (openColumns == 0)
+                //{
+                //    InProgress = false;
+                //    WriteLine("\nNo more available moves. Game ends in tie.");
+                //}
+
+                // Check horizonal win starting with lowest row
+                for (int x = board.GetUpperBound(0); x >= 0; x--)
                 {
-                    openColumns += 1;
+                    continuousPieces = 0;
+
+                    for (int y = 0; y < board.GetUpperBound(1); y++)
+                    {
+                        //continuousPieces = (board[x, y] == Piece) ? continuousPieces += 1 : continuousPieces = 0;
+
+                        if (board[x, y] == Piece)
+                        {
+                            continuousPieces += 1;
+
+                            if (continuousPieces >= SpacesToWin)
+                            {
+                                // TODO: If game won code needs to stop and exit game
+                                WriteLine($"Player {Piece} won the game!");
+                                InProgress = false;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            continuousPieces = 0;
+                        }    
+                    }
                 }
             }
-
-            if (openColumns > 0)
+            catch (Exception ex)
             {
-                
+                WriteLine(ex.ToString());
             }
         }
     }
