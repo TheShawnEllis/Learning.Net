@@ -40,6 +40,7 @@ namespace ConnectFour
             {
                 Write($"{colSeperator}{i + 1} ");
             }
+            
             Write(colSeperator);
             WriteLine();
             WriteLine(rowBoarder);
@@ -51,6 +52,7 @@ namespace ConnectFour
                 {
                     Write($"{colSeperator}{board[currentRow, currentCol]} ");
                 }
+                
                 Write(colSeperator);
                 WriteLine();
                 WriteLine(rowBoarder);
@@ -91,7 +93,6 @@ namespace ConnectFour
                 playerOneTurn = !playerOneTurn;
 
                 if (rounds >= SpacesToWin) IsGameWin(playerPiece);
-                //IsGameWin(playerPiece);
             }
         }
 
@@ -169,17 +170,20 @@ namespace ConnectFour
                 int openColumns = 0;
                 int continuousPieces = 0;
 
-                // Check for open spaces in row 0
-                //for (int i = 0; i < board.GetLength(1); i++)
-                //{
-                //    if (String.IsNullOrWhiteSpace(board[0, i].ToString())) openColumns += 1;
-                //}
+                // Check for remaining moves using row 0
+                for (int i = 0; i < board.GetUpperBound(1); i++)
+                {
+                    if (String.IsNullOrWhiteSpace(board[0, i].ToString()))
+                    {
+                        openColumns += 1;
+                    }
+                }
 
-                //if (openColumns == 0)
-                //{
-                //    InProgress = false;
-                //    WriteLine("\nNo more available moves. Game ends in tie.");
-                //}
+                if (openColumns == 0)
+                {
+                    InProgress = false;
+                    WriteLine("\nNo more available moves. Game ends in tie.");
+                }
 
                 // Check horizonal win starting with lowest row
                 for (int x = board.GetUpperBound(0); x >= 0; x--)
@@ -188,8 +192,6 @@ namespace ConnectFour
 
                     for (int y = 0; y < board.GetUpperBound(1); y++)
                     {
-                        //continuousPieces = (board[x, y] == Piece) ? continuousPieces += 1 : continuousPieces = 0;
-
                         if (board[x, y] == Piece)
                         {
                             continuousPieces += 1;
