@@ -186,7 +186,6 @@ namespace ConnectFour
                             if (continuousPieces >= SpacesToWin)
                             {
                                 EndGame(true);
-                                // InProgress = false;
                                 break;
                             }
                         }
@@ -211,7 +210,6 @@ namespace ConnectFour
                             if (continuousPieces >= SpacesToWin)
                             {
                                 EndGame(true);
-                                // InProgress = false;
                                 break;
                             }
                         }
@@ -238,7 +236,6 @@ namespace ConnectFour
                                 if (continuousPieces >= SpacesToWin)
                                 {
                                     EndGame(true);
-                                    // InProgress = false;
                                     return;
                                 }
                             }
@@ -265,7 +262,6 @@ namespace ConnectFour
                                 if (continuousPieces >= SpacesToWin)
                                 {
                                     EndGame(true);
-                                    // InProgress = false;
                                     return;
                                 }
                             }
@@ -319,7 +315,6 @@ namespace ConnectFour
                 {
                     ClearBoard();
                     DisplayBoard();
-                    // playerOneTurn = true;
                 }
                 else
                 {
