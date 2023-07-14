@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Transactions;
 using static System.Console;
@@ -90,9 +91,10 @@ namespace ConnectFour
                 if (playerOneTurn) rounds += 1;
 
                 PlacePlayerPiece(playerSelection.openRow, playerSelection.columnChoice, playerPiece);
-                playerOneTurn = !playerOneTurn;
 
                 if (rounds >= SpacesToWin) IsGameWin(playerPiece);
+
+                playerOneTurn = !playerOneTurn;
             }
         }
 
@@ -170,22 +172,7 @@ namespace ConnectFour
                 int openColumns = 0;
                 int continuousPieces = 0;
 
-                // Check for remaining moves using row 0
-                for (int i = 0; i < board.GetUpperBound(1); i++)
-                {
-                    if (String.IsNullOrWhiteSpace(board[0, i].ToString()))
-                    {
-                        openColumns += 1;
-                    }
-                }
-
-                if (openColumns == 0)
-                {
-                    InProgress = false;
-                    WriteLine("\nNo more available moves. Game ends in tie.");
-                }
-
-                // Check horizonal win starting with lowest row
+                // Check horizonal spaces for win starting with last row
                 for (int x = board.GetUpperBound(0); x >= 0; x--)
                 {
                     continuousPieces = 0;
@@ -198,8 +185,8 @@ namespace ConnectFour
 
                             if (continuousPieces >= SpacesToWin)
                             {
-                                WriteLine($"Player {Piece} won the game!");
-                                InProgress = false;
+                                EndGame(true);
+                                // InProgress = false;
                                 break;
                             }
                         }
@@ -209,10 +196,136 @@ namespace ConnectFour
                         }    
                     }
                 }
+
+                // Check vertical spaces for win 
+                for (int y = 0; y < board.GetUpperBound(1); y++)
+                {
+                    continuousPieces = 0;
+
+                    for (int x = board.GetUpperBound(0); x >= 0; x--)
+                    {
+                        if (board[x, y] == Piece)
+                        {
+                            continuousPieces += 1;
+
+                            if (continuousPieces >= SpacesToWin)
+                            {
+                                EndGame(true);
+                                // InProgress = false;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            continuousPieces = 0;
+                        }
+                    }
+                }
+
+
+                // Check diagonal spaces going (/) for win
+                for (int x = 0; x <= board.GetUpperBound(0) - SpacesToWin + 1; x++)
+                {
+                    for (int y = 0; y <= board.GetUpperBound(1) - SpacesToWin + 1; y++)
+                    {
+                        continuousPieces = 0;
+                        for (int i = 0; i < SpacesToWin; i++)
+                        {
+                            if (board[x + i, y + i] == Piece)
+                            {
+                                continuousPieces += 1;
+
+                                if (continuousPieces >= SpacesToWin)
+                                {
+                                    EndGame(true);
+                                    // InProgress = false;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Check diagonal spaces going (\) for win
+                for (int x = SpacesToWin - 1; x <= board.GetUpperBound(0); x++)
+                {
+                    for (int y = 0; y <= board.GetUpperBound(1) - SpacesToWin + 1; y++)
+                    {
+                        continuousPieces = 0;
+                        for (int i = 0; i < SpacesToWin; i++)
+                        {
+                            if (board[x - i, y + i] == Piece)
+                            {
+                                continuousPieces += 1;
+
+                                if (continuousPieces >= SpacesToWin)
+                                {
+                                    EndGame(true);
+                                    // InProgress = false;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Check for remaining moves using row 0
+                for (int i = 0; i < board.GetLength(1); i++)
+                {
+                    if (String.IsNullOrWhiteSpace(board[0, i].ToString()))
+                    {
+                        openColumns += 1;
+                    }
+                }
+
+                if (openColumns == 0)
+                {
+                    InProgress = false;
+                    WriteLine("\nNo more available moves. Game ends in tie.");
+                }
             }
             catch (Exception ex)
             {
                 WriteLine(ex.ToString());
+            }
+        }
+
+        private void EndGame(bool GameWin)
+        {
+            if (GameWin)
+            {
+                string Player = (playerOneTurn) ? "One" : "Two";
+                WriteLine($"Player {Player} won the game!!!");
+            }
+            else
+            {
+                WriteLine("Game is ends in TIE.");
+            }
+
+            WriteLine("Do you want to play again? Y/N");
+            string replay = ReadLine();
+
+            if (!String.IsNullOrEmpty(replay))
+            {
+                if (replay == "Y" || replay == "y")
+                {
+                    ClearBoard();
+                    DisplayBoard();
+                    // playerOneTurn = true;
+                }
+                else
+                {
+                    WriteLine("Thanks for playing. Ending Game.");
+                    InProgress = false;
+                }
             }
         }
     }
